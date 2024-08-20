@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import Card from "../components/ReusableCard";
 import NavBar from "../components/NavBar";
 
 function Directors() {
@@ -6,23 +7,15 @@ function Directors() {
 
   useEffect(() => {
     fetch("http://localhost:4000/directors")
-      .then((res) => res.json())
-      .then((data) => {
-        setDirectors(data);
-      })
-      .catch((err) => console.log(err));
+      .then((r) => r.json())
+      .then((data) => setDirectors(data))
+      .catch((error) => console.error(error));
   }, []);
 
-  const directorsList = directors.map((director) => (
-    <article key={director.id}>
-      <h2>{director.name}</h2>
-      <ul>
-        {director.movies.map((movie) => (
-          <li key={movie.index}>{movie}</li>
-        ))}
-      </ul>
-    </article>
+  const directorList = directors.map((director) => (
+    <Card key={director.id} name={director.name} movies={director.movies} />
   ));
+
   return (
     <>
       <header>
@@ -30,7 +23,7 @@ function Directors() {
       </header>
       <main>
         <h1>Directors Page</h1>
-        {directorsList}
+        {directorList}
       </main>
     </>
   );
